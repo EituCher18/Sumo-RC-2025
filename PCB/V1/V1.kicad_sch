@@ -1442,246 +1442,6 @@
 				)
 			)
 		)
-		(symbol "Switch:SW_DPDT_x2"
-			(pin_names
-				(offset 0) hide)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "SW"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "SW_DPDT_x2"
-				(at 0 -5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Switch, dual pole double throw, separate symbols"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "switch dual-pole double-throw DPDT spdt ON-ON"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "SW*DPDT*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "SW_DPDT_x2_0_0"
-				(circle
-					(center -2.032 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 -2.54)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "SW_DPDT_x2_0_1"
-				(rectangle
-					(start -3.175 3.81)
-					(end 3.175 -3.81)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.524 0.254) (xy 1.5748 2.286)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 2.54)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "SW_DPDT_x2_1_1"
-				(pin passive line
-					(at 5.08 2.54 180)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 -2.54 180)
-					(length 2.54)
-					(name "C"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "SW_DPDT_x2_2_1"
-				(pin passive line
-					(at 5.08 2.54 180)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 -2.54 180)
-					(length 2.54)
-					(name "C"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-		)
 		(symbol "Switch:SW_DPST_x2"
 			(pin_names
 				(offset 0) hide)
@@ -3111,16 +2871,6 @@
 	)
 	(wire
 		(pts
-			(xy 234.95 50.8) (xy 234.95 38.1)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "36f2660d-1572-43ed-8a0b-882549b540f1")
-	)
-	(wire
-		(pts
 			(xy 245.11 35.56) (xy 247.65 35.56)
 		)
 		(stroke
@@ -3188,16 +2938,6 @@
 			(type default)
 		)
 		(uuid "73715090-8bad-4855-99d1-507a27f20363")
-	)
-	(wire
-		(pts
-			(xy 232.41 33.02) (xy 234.95 33.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "747ae2dc-c683-4890-b2aa-3a8867a75736")
 	)
 	(wire
 		(pts
@@ -3278,26 +3018,6 @@
 			(type default)
 		)
 		(uuid "a489875d-b7c2-43f6-8f1e-4aa81d7a56b6")
-	)
-	(wire
-		(pts
-			(xy 261.62 54.61) (xy 261.62 53.34)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a8dd8f6e-0b27-48a1-b4d4-8ee27e562317")
-	)
-	(wire
-		(pts
-			(xy 261.62 50.8) (xy 234.95 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aeec74cb-04c5-46ea-8e4f-5c5bc0b8828c")
 	)
 	(wire
 		(pts
@@ -4590,76 +4310,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:Screw_Terminal_01x02")
-		(at 266.7 50.8 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "37893802-f57b-4ddc-86a7-beed539cdbb7")
-		(property "Reference" "J2"
-			(at 269.24 50.7999 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Bateria2"
-			(at 269.24 53.3399 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Connector_AMASS:AMASS_XT60-M_1x02_P7.20mm_Vertical"
-			(at 266.7 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 266.7 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 266.7 50.8 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "72e1430e-5b01-4c99-a92d-ac3a39ce1109")
-		)
-		(pin "1"
-			(uuid "3cefcc6d-d3e5-469a-ad19-03dd75db1544")
-		)
-		(instances
-			(project "V1"
-				(path "/29879115-04b6-4afd-8d22-e79ce2ef70cc"
-					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 195.58 85.09 0)
 		(unit 1)
@@ -5554,72 +5204,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 261.62 54.61 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "794c5bcc-e6b6-456b-9b03-f7c3d626d17e")
-		(property "Reference" "#PWR04"
-			(at 261.62 60.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 261.62 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 261.62 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 261.62 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 261.62 54.61 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "13c7dab5-d3c9-4ccf-9db7-9909a741688e")
-		)
-		(instances
-			(project "V1"
-				(path "/29879115-04b6-4afd-8d22-e79ce2ef70cc"
-					(reference "#PWR04")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 172.72 113.03 0)
 		(unit 1)
@@ -6463,7 +6047,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 232.41 33.02 0)
+		(at 245.11 35.56 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6472,7 +6056,7 @@
 		(fields_autoplaced yes)
 		(uuid "c00f9dc0-ec94-46c0-ba09-0fea077ba674")
 		(property "Reference" "#PWR09"
-			(at 232.41 39.37 0)
+			(at 245.11 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6481,7 +6065,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 232.41 38.1 0)
+			(at 245.11 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6489,7 +6073,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 232.41 33.02 0)
+			(at 245.11 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6498,7 +6082,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 232.41 33.02 0)
+			(at 245.11 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6507,7 +6091,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 232.41 33.02 0)
+			(at 245.11 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6886,7 +6470,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Angled_CK_OS102011MA1Q"
+		(property "Footprint" "TerminalBlock:TerminalBlock_bornier-2_P5.08mm"
 			(at 252.73 35.56 0)
 			(effects
 				(font
@@ -6929,86 +6513,6 @@
 			(project "V1"
 				(path "/29879115-04b6-4afd-8d22-e79ce2ef70cc"
 					(reference "SW3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_DPDT_x2")
-		(at 240.03 35.56 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f65ce431-ccdb-4b13-a0df-4ba594abd753")
-		(property "Reference" "SW2"
-			(at 240.03 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW 24V/12V"
-			(at 240.03 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_THT:SW_Slide_SPDT_Angled_CK_OS102011MA1Q"
-			(at 240.03 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 240.03 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Switch, dual pole double throw, separate symbols"
-			(at 240.03 35.56 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "6"
-			(uuid "32482956-5256-45de-ae03-4118e94798b6")
-		)
-		(pin "1"
-			(uuid "a730d365-16c5-4c73-964c-41138b9213d7")
-		)
-		(pin "5"
-			(uuid "051140bd-d7be-4a4b-90fc-80686bbd1018")
-		)
-		(pin "3"
-			(uuid "311b5ee1-92d1-446d-ab43-046dc4838bde")
-		)
-		(pin "4"
-			(uuid "9d3594ca-098d-4853-8623-273ad2d2a29f")
-		)
-		(pin "2"
-			(uuid "efd991e8-b8e5-4a0e-9351-e48f7f9db76c")
-		)
-		(instances
-			(project "V1"
-				(path "/29879115-04b6-4afd-8d22-e79ce2ef70cc"
-					(reference "SW2")
 					(unit 1)
 				)
 			)
