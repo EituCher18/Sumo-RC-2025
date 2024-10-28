@@ -3,12 +3,12 @@
 // #include <freertos/task.h>
 
 // Pines de conexión al controlador L298
-const int motorLeftPin1 = 15;  // IN1 del L298
-const int motorLeftPin2 = 2;   // IN2 del L298
-const int motorRightPin1 = 4;  // IN3 del L298
-const int motorRightPin2 = 16; // IN4 del L298
-const int enableLeftPin = 13;  // ENA del L298
-const int enableRightPin = 12; // ENB del L298
+#define motorLeftPin1 15  // IN1 del L298
+#define motorLeftPin2 2   // IN2 del L298
+#define motorRightPin1 4  // IN3 del L298
+#define motorRightPin2 16 // IN4 del L298
+#define enableLeftPin 13  // ENA del L298
+#define enableRightPin 12 // ENB del L298
 
 
 ////Intervalos
@@ -20,7 +20,7 @@ const int enableRightPin = 12; // ENB del L298
 #define Intervalo_Izquierda 1000
 
 // Pin para el LED (cambiar si es necesario)
-const int ledPin = 23; // Pin para el LED
+#define ledPin = 23; // Pin para el LED
 
 // Variables para el control de motores y temporización
 int leftMotorSpeed = 0;
