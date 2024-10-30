@@ -1,32 +1,17 @@
 #include <PS4Controller.h>
-// #include <freertos/FreeRTOS.h>
-// #include <freertos/task.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
 // Pines de conexión al controlador L298
-#define motorLeftPin1 15   // IN1 del L298
-#define motorLeftPin2 2    // IN2 del L298
-#define motorRightPin1 4   // IN3 del L298
-#define motorRightPin2 16  // IN4 del L298
-#define enableLeftPin 13   // ENA del L298
-#define enableRightPin 12  // ENB del L298
-
-
-////Intervalos
-#define Intervalo_Adelante 5000
-#define Intervalo_Atras 5000
-#define Intervalo_45_Grados_Derecha 500
-#define Intervalo_45_Grados_Izquierda 500
-#define Intervalo_Derecha 1000
-#define Intervalo_Izquierda 1000
-
-
-/// Verificaciones
-uint8_t Mandar_Color_1_Vez = 1;
-
-
+const int motorLeftPin1 = 15;   // IN1 del L298
+const int motorLeftPin2 = 2;    // IN2 del L298
+const int motorRightPin1 = 4;   // IN3 del L298
+const int motorRightPin2 = 16;  // IN4 del L298
+const int enableLeftPin = 13;   // ENA del L298
+const int enableRightPin = 12;  // ENB del L298
 
 // Pin para el LED (cambiar si es necesario)
-#define ledPin 23 // Pin para el LED
+const int ledPin = 23;  // Pin para el LED
 
 // Variables para el control de motores y temporización
 int leftMotorSpeed = 0;
@@ -44,9 +29,9 @@ enum State {
   TURN_45_LEFT,
   STOP,
   SPIN_RIGHT,
-  SPIN_LEFT
+  SPIN_LEFT,
+  CRAZY_LEFT_SPIN
 };
-
 State currentState = IDLE;
 
 void setup() {
@@ -65,7 +50,7 @@ void setup() {
   setColor(255, 20, 147);  // Establecer color rosa (RGB)
 
   // Iniciar la conexión Bluetooth en Core 0
-  PS4.begin("XX:XX:XX:XX:XX:XX");  // Reemplaza con la dirección MAC de tu ESP32
+  PS4.begin("e0:5a:1b:d0:5c:2a");  // Reemplaza con la dirección MAC de tu ESP32
   Serial.println("Conectando al controlador PS4...");
 
   // Crear tareas en diferentes núcleos
@@ -79,45 +64,47 @@ void loop() {
 
 // Tarea para manejar la conexión Bluetooth y leer comandos
 void readBluetoothCommands(void* parameter) {
+  uint8_t No_Saturar_Color;
   while (true) {
     if (PS4.isConnected()) {
       // Encender el LED en rosa al conectarse
-      if (Mandar_Color_1_Vez == 1) {
+      if (No_Saturar_Color == 0) {
+
         setColor(255, 20, 147);  // Establecer color rosa (RGB)
-        Mandar_Color_1_Vez = 0;
+        Serial.println("Joystick PS4 conectado.");
       }
+
       // Verificar si se ha presionado el botón R1 para detener los motores
       if (PS4.R1()) {
-        currentState = STOP;  // Cambiar al estado STOP inmediatamente
+        currentState = STOP;
       } else if (PS4.Circle()) {
-        currentState = SPIN_RIGHT;  // Cambiar al estado SPIN_RIGHT si se presiona Círculo
+        currentState = SPIN_RIGHT;
       } else if (PS4.Square()) {
-        currentState = SPIN_LEFT;  // Cambiar al estado SPIN_LEFT si se presiona Cuadrado
+        currentState = CRAZY_LEFT_SPIN;
       } else if (PS4.Triangle() && PS4.Right()) {
-        currentState = TURN_45_RIGHT;  // Cambiar al estado TURN_45_RIGHT si se mantiene Triángulo y se toca Derecha
-        actionStartTime = millis();    // Guardar el tiempo de inicio para el giro de 45 grados a la derecha
+        currentState = TURN_45_RIGHT;
+        actionStartTime = millis();
       } else if (PS4.Triangle() && PS4.Left()) {
-        currentState = TURN_45_LEFT;  // Cambiar al estado TURN_45_LEFT si se mantiene Triángulo y se toca Izquierda
-        actionStartTime = millis();   // Guardar el tiempo de inicio para el giro de 45 grados a la izquierda
+        currentState = TURN_45_LEFT;
+        actionStartTime = millis();
       } else if (currentState == IDLE) {
         if (PS4.Up()) {
-          currentState = FORWARD;      // Cambiar al estado FORWARD
-          actionStartTime = millis();  // Guardar el tiempo de inicio del movimiento hacia adelante
+          currentState = FORWARD;
+          actionStartTime = millis();
         } else if (PS4.Down()) {
-          currentState = BACKWARD;     // Cambiar al estado BACKWARD
-          actionStartTime = millis();  // Guardar el tiempo de inicio del movimiento hacia atrás
+          currentState = BACKWARD;
+          actionStartTime = millis();
         } else if (PS4.Right()) {
-          currentState = TURN_RIGHT;   // Cambiar al estado TURN_RIGHT
-          actionStartTime = millis();  // Guardar el tiempo de inicio del giro a la derecha
+          currentState = TURN_RIGHT;
+          actionStartTime = millis();
         } else if (PS4.Left()) {
-          currentState = TURN_LEFT;    // Cambiar al estado TURN_LEFT
-          actionStartTime = millis();  // Guardar el tiempo de inicio del giro a la izquierda
+          currentState = TURN_LEFT;
+          actionStartTime = millis();
         } else {
           // Control normal con joystick en el estado IDLE
-          int leftY = PS4.LStickY();   // Joystick izquierdo en el eje Y
-          int rightX = PS4.RStickX();  // Joystick derecho en el eje X
+          int leftY = PS4.LStickY();
+          int rightX = PS4.RStickX();
 
-          // Calcular velocidad de motores
           leftMotorSpeed = constrain(map(leftY + rightX, -128, 128, -255, 255), -255, 255);
           rightMotorSpeed = constrain(map(leftY - rightX, -128, 128, -255, 255), -255, 255);
         }
@@ -128,12 +115,12 @@ void readBluetoothCommands(void* parameter) {
         currentState = STOP;
       }
 
-      // Si el botón Cuadrado se ha soltado y estamos en SPIN_LEFT, detener el giro
-      if (!PS4.Square() && currentState == SPIN_LEFT) {
+      // Si el botón Cuadrado se ha soltado y estamos en CRAZY_LEFT_SPIN, detener el giro
+      if (!PS4.Square() && currentState == CRAZY_LEFT_SPIN) {
         currentState = STOP;
       }
     } else {
-      Mandar_Color_1_Vez = 1;
+      No_Saturar_Color = 0;
     }
     vTaskDelay(10 / portTICK_PERIOD_MS);  // Pausa de 10 ms para no saturar
   }
@@ -147,89 +134,93 @@ void motorControlTask(void* parameter) {
         // Control normal de los motores en el estado IDLE
         controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, leftMotorSpeed);
         controlMotor(motorRightPin1, motorRightPin2, enableRightPin, rightMotorSpeed);
+        Serial.print("Estado: IDLE, Velocidad izquierda: ");
+        Serial.print(leftMotorSpeed);
+        Serial.print(", Velocidad derecha: ");
+        Serial.println(rightMotorSpeed);
         break;
 
       case FORWARD:
-        // Configurar los motores para moverse hacia adelante en el estado FORWARD
         controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);
         controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);
+        Serial.println("Estado: FORWARD");
 
-        // Cambiar al estado STOP después de 5 segundos
-        if (millis() - actionStartTime >= Intervalo_Adelante) {
+        if (millis() - actionStartTime >= 5000) {
           currentState = STOP;
         }
         break;
 
       case BACKWARD:
-        // Configurar los motores para moverse hacia atrás en el estado BACKWARD
         controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);
         controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);
+        Serial.println("Estado: BACKWARD");
 
-        // Cambiar al estado STOP después de 5 segundos
-        if (millis() - actionStartTime >= Intervalo_Atras) {
+        if (millis() - actionStartTime >= 5000) {
           currentState = STOP;
         }
         break;
 
       case TURN_RIGHT:
-        // Configurar los motores para girar a la derecha
-        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);      // Motor izquierdo hacia adelante
-        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);  // Motor derecho hacia atrás
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);
+        Serial.println("Estado: TURN_RIGHT");
 
-        // Cambiar al estado STOP después de 1 segundo (ajusta el tiempo según pruebas)
-        if (millis() - actionStartTime >= Intervalo_Derecha) {
+        if (millis() - actionStartTime >= 1000) {
           currentState = STOP;
         }
         break;
 
       case TURN_LEFT:
-        // Configurar los motores para girar a la izquierda
-        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);    // Motor izquierdo hacia atrás
-        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);  // Motor derecho hacia adelante
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);
+        Serial.println("Estado: TURN_LEFT");
 
-        // Cambiar al estado STOP después de 1 segundo (ajusta el tiempo según pruebas)
-        if (millis() - actionStartTime >= Intervalo_Izquierda) {
+        if (millis() - actionStartTime >= 1000) {
           currentState = STOP;
         }
         break;
 
       case TURN_45_RIGHT:
-        // Configurar los motores para girar 45 grados a la derecha
-        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);      // Motor izquierdo hacia adelante
-        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);  // Motor derecho hacia atrás
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);
+        Serial.println("Estado: TURN_45_RIGHT");
 
-        // Cambiar al estado STOP después de 0.5 segundos para un giro de 45 grados
-        if (millis() - actionStartTime >= Intervalo_45_Grados_Derecha) {
+        if (millis() - actionStartTime >= 500) {
           currentState = STOP;
         }
         break;
 
       case TURN_45_LEFT:
-        // Configurar los motores para girar 45 grados a la izquierda
-        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);    // Motor izquierdo hacia atrás
-        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);  // Motor derecho hacia adelante
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);
+        Serial.println("Estado: TURN_45_LEFT");
 
-        // Cambiar al estado STOP después de 0.5 segundos para un giro de 45 grados
-        if (millis() - actionStartTime >= Intervalo_45_Grados_Izquierda) {
+        if (millis() - actionStartTime >= 500) {
           currentState = STOP;
         }
         break;
 
       case SPIN_RIGHT:
-        // Configurar los motores para giro continuo a la derecha
-        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);      // Motor izquierdo hacia adelante
-        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);  // Motor derecho hacia atrás
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, 200);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, -200);
+        Serial.println("Estado: SPIN_RIGHT");
         break;
 
       case SPIN_LEFT:
-        // Configurar los motores para giro continuo a la izquierda
-        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);    // Motor izquierdo hacia atrás
-        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);  // Motor derecho hacia adelante
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -200);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 200);
+        Serial.println("Estado: SPIN_LEFT");
+        break;
+
+      case CRAZY_LEFT_SPIN:
+        controlMotor(motorLeftPin1, motorLeftPin2, enableLeftPin, -255);
+        controlMotor(motorRightPin1, motorRightPin2, enableRightPin, 255);
+        Serial.println("Estado: CRAZY_LEFT_SPIN");
         break;
 
       case STOP:
-        // Detener los motores y regresar al estado IDLE
         stopMotors();
+        Serial.println("Estado: STOP");
         currentState = IDLE;
         break;
     }
