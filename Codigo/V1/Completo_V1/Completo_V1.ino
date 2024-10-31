@@ -1,6 +1,10 @@
 #include <PS4Controller.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include "esp_bt_main.h"
+#include "esp_bt_device.h"
+#include "esp_gap_bt_api.h"
+#include "esp_err.h"
 
 // Pines de conexión al controlador L298
 const int motorLeftPin1 = 25;   // IN1 del L298
@@ -50,6 +54,15 @@ void setup() {
 
   // Iniciar la conexión Bluetooth en Core 0
   PS4.begin("e0:5a:1b:d0:5c:2a");  // Reemplaza con la dirección MAC de tu ESP32
+
+  uint8_t pairedDeviceBtAddr[20][6];  
+  int count = esp_bt_gap_get_bond_device_num();
+  esp_bt_gap_get_bond_device_list(&count, pairedDeviceBtAddr);
+  for(int i = 0; i < count; i++) 
+  {
+    esp_bt_gap_remove_bond_device(pairedDeviceBtAddr[i]);
+  }
+
   Serial.println("Conectando al controlador PS4...");
 
   // Crear tareas en diferentes núcleos
