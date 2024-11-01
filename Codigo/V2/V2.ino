@@ -48,13 +48,16 @@ T betterMap(const T x, const T in_min, const T in_max, const T out_min, const T 
 
 template<typename T, typename O>
 O linearInterpolation(const T x, const T* x_values, const O* y_values, size_t len) {
-  size_t start_index = len - 2;
-  size_t end_index = len - 1;
+  size_t start_index = 0;
+  size_t end_index = 1;
 
-  for (size_t i = 0; i < len - 1; i++) {
+  for (size_t i = 1; i < len - 1; i++) {
     if (x >= x_values[i]) {
-      start_index = i;
-      end_index = i;
+      if (x < x_values[i + 1]) {
+        start_index = i;
+        end_index = i + 1;
+        break;
+      }
     }
   }
 
@@ -69,32 +72,34 @@ struct MotorSpeeds {
 };
 
 struct MotorSpeeds calculateMotorSpeeds(int8_t x, int8_t y) {
-  constexpr float left_x_values[] = { 0, PI / 2, PI, 3 * PI / 2, 2 * PI };
-  constexpr float left_y_values[] = { 1, 1, 0, -1, 1 };
-  constexpr float right_x_values[] = { 0, PI / 2, PI, 3 * PI / 2, 2 * PI };
-  constexpr float right_y_values[] = { 0, 1, 1, -1, 1 };
+  constexpr float left_x_values[] = { -PI, -PI / 2, 0, PI / 2, PI };
+  constexpr float left_y_values[] = { 0, -1, 1, 1, 0 };
+  constexpr float right_x_values[] = { -PI, -PI / 2, 0, PI / 2, PI };
+  constexpr float right_y_values[] = { 1, -1, 0, 1, 1 };
 
   float angle = atan2f(y, x);
   float magnitude = constrain(sqrt(x * x + y * y), 0.0, 128.0) / 128.0;
 
+  Serial.printf("%f\t%f\n", angle, magnitude);
+
   float left_speed = linearInterpolation(angle, left_x_values, left_y_values, sizeof(left_x_values) / sizeof(float));
   bool left_forward = true;
   if (left_speed < 0) {
-    left_speed = -left_speed;
+    left_speed = abs(left_speed);
     left_forward = false;
   }
 
   float right_speed = linearInterpolation(angle, right_x_values, right_y_values, sizeof(right_x_values) / sizeof(float));
   bool right_forward = true;
   if (right_speed < 0) {
-    right_speed = -right_speed;
+    right_speed = abs(right_speed);
     right_forward = false;
   }
 
   struct MotorSpeeds result = {
-    left_speed * magnitude,
+    left_speed * magnitude * 255.0,
     left_forward,
-    right_speed * magnitude,
+    right_speed * magnitude * 255.0,
     right_forward,
   };
   return result;
@@ -104,6 +109,8 @@ void loop() {
   if (PS4.isConnected() == false) {
     return;
   }
+
+  PS4.setFlashRate(100, 200);
 
   PS4.setLed(255, 0, 100);
 
@@ -135,4 +142,5 @@ void loop() {
   }
 
   Serial.printf("%d\t%d\t%d\t%d\n", motor_speeds.left_speed, motor_speeds.left_forward, motor_speeds.right_speed, motor_speeds.right_forward);
+  vTaskDelay(1000 / 60);
 }
